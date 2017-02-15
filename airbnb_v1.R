@@ -1,16 +1,4 @@
-gc()  # garbage collection
-
-# install latest packages if default repo is incorrect
-#install.packages('rmarkdown', repos='http://cran.us.r-project.org')
-
-setwd("~/Class- R Class/Kaggle- AirBnB")
-#setwd("~/Kaggle-AirBnb")
-
-# load data
-#load("Airbnb_Data_combined.RData")
-#load("Airbnb_Data_raw.RData")
-#load("~/Kaggle-AirBnb/Airbnb_Data_1.5.RData")
-load("Airbnb_data_1.5.RData")
+setwd("input path")
 
 # list datasets
 ls(all = TRUE)
@@ -23,17 +11,6 @@ lapply(x, FUN = function(X) {
   do.call("require", list(X)) 
 })
 rm(x)
-
-
-#registerDoMC(8)Use for AWS only
-
-cores <- 8
-
-if(cores > 1) {
-  library(doMC)
-  registerDoMC(cores)
-}
-
 
 #################### Reading data and adding features ###################
 
@@ -152,6 +129,7 @@ rm(convertCols)
 rm(i)
 rm(isOrdered)
 rm(isFactored)
+
 ####
 # add feature: signup_time = timestamp_first_active - date_account_created 
 ####
@@ -271,7 +249,7 @@ rm(unique_actions)
 
 #################### end of loading data and adding features ###################
 
-############################################################################
+##
 # dealing with missing data
 ## 
 
@@ -338,8 +316,8 @@ rm(missing)
 rm(num_device_type_used)
 
 
-###################################################################
-##    Create Dummy Variables
+#####
+##    Create Dummy Variables One hot encoding
 #####
 
 # create dummy variables for factor variables only (exclude set, and country_destination)
@@ -739,20 +717,6 @@ save(svmRFitReduced, file =" svmRFitReduced.rda")
 svmRFitReduced$times$everything  # elapsed 379850.17,  4.396414 days
 
 
-# Tuning parameter 'sigma' was held constant at a value of 0.0007664126
-# ROC was used to select the optimal model using  the largest value.
-# The final values used for the model were sigma = 0.0007664126 and C = 8. 
-
-svmRFitReducedCM <- confusionMatrix((predict(svmRFitReduced, training_evaluationDummy[, reducedSetDummy])), training_evaluationDummy$booking)
-svmRFitReducedCM # accuracy: Error , kappa: Error   (reasonable kappa around 0.3-0.5)
-
-
-# Error in binom.test(sum(diag(x)), sum(x)) : 
-#   'n' must be a positive integer >= 'x'
-# In addition: Warning message:
-#   In method$predict(modelFit = modelFit, newdata = newdata, submodels = param) :
-#   kernlab class prediction calculations failed; returning NAs
-
 
 ####  Basic Classification Trees
 
@@ -784,36 +748,6 @@ rpartFactorFit$times$everything #284.74
 rpartFactorFitCM <- confusionMatrix((predict(rpartFactorFit, training_evaluationFactor[, fullSet])), training_evaluationFactor$booking)
 rpartFactorFitCM # accuracy : 0.7719, kappa: 0.5103  (reasonable kappa around 0.3-0.5)
 
-
-## J48
-set.seed(100)  # failed.. no RWeka.. java installion
-j48FactorFit <- train(x = training_trainFactor[,fullSet],
-                      y = training_trainFactor$booking,
-                      method = "J48",
-                      metric = "ROC",
-                      trControl = ctrl)
-j48FactorFit
-save(j48FactorFit, file = "j48FactorFit.rda")
-j48FactorFit$times$everything #1908.98
-j48FactorFitCM <- confusionMatrix((predict(j48FactorFit, training_evaluationFactor[, fullSet])), training_evaluationFactor$booking)
-j48FactorFitCM # accuracy: 0.7478  , kappa: 0.4607   (reasonable kappa around 0.3-0.5)
-
-set.seed(100) # errors 
-j48Fit <- train(x = training_trainDummy[,fullSetDummy], 
-                y = training_trainDummy$booking,
-                method = "J48",
-                metric = "ROC",
-                trControl = ctrl)
-save(j48Fit, file = "j48FactorFit.rda")
-j48Fit$times$everything #
-j48FitCM <- confusionMatrix((predict(j48Fit, training_evaluationFactor[, fullSet])), training_evaluationFactor$booking)
-j48FitCM # accuracy : , kappa:   (reasonable kappa around 0.3-0.5)
-
-# 6: In eval(expr, envir, enclos) :
-#   model fit failed for Fold09: C=0.25 Error in .jarray(x) : java.lang.OutOfMemoryError: Java heap space
-# 
-# 7: In nominalTrainWorkflow(x = x, y = y, wts = weights, info = trainInfo,  :
-#                              There were missing values in resampled performance measures.
 
 #### Rule-Based Models
 set.seed(100)
@@ -930,7 +864,6 @@ xgbFitCM # accuracy: 0.7817 , kappa:0.5353  (reasonable kappa around 0.3-0.5)
 # top 5 (NDF, US, other, FR, IT, GB, ES)
 sort(table(trainingDummy$country_destination)/ nrow(trainingDummy) *100)
 
-
 #  prepare testing set 
 testingDummy <- testingDummy[, names(trainingDummy)]
 names(testingDummy)
@@ -945,12 +878,10 @@ load("nnetFit.rda")
 nnetPrediction <- predict(nnetFit, test_preds)
 head(nnetPrediction)  # Levels: No (NDF) Yes (US)
 
-
 ## Rpart prediction
 load("rpartFit.rda")
 rpartPrediction <- predict(rpartFit, testingDummy[, reducedSetDummy])
 head(rpartPrediction)  # Levels: No (NDF) Yes (US)
-
 
 ## XGBoost prediction
 load("xgbFit.rda")
@@ -976,7 +907,6 @@ names(modelAvg)[4] <- "xgboost"
 modelAvg$average <- rowMeans(subset(modelAvg, select = c("rf", "nnet", "rpart", "xgboost")), na.rm = TRUE)
 modelAvg$prediction <- ifelse(modelAvg$average >=0.5, "NDF", "US")
 head(modelAvg)
-
 
 # submission format (id,country)  - re-use code for each submission
 submission <- read.csv("submission.csv", header = TRUE)
@@ -1091,10 +1021,6 @@ xgbMultiFit
 # 0.50              0.6987211  0.01089670  0.0004537622  0.0004910653
 # 1.00              0.6985473  0.01036969  0.0005628442  0.0010273574
 # 1.58              0.6989643  0.01118722  0.0005320956  0.0011983176
-
-
-
-
 
 # C50
 ctrl_multi <- trainControl(method = "CV",
