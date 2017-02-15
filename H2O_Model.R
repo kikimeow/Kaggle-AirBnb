@@ -13,7 +13,7 @@
 # Setup
 # **************************************
 
-path <- "~/Class- R Class/Kaggle- AirBnB/Solution Final - SH"
+path <- "input path here"
 setwd(path)
 load("data/Preprocessed.RData")
 
@@ -22,20 +22,6 @@ library(h2oEnsemble)  # Requires version >=0.0.4 of h2oEnsemble
 localH2O <- h2o.init(nthreads = -1, max_mem_size = "8G")  # Start an H2O cluster with nthreads = num cores on your machine.  Use all cores available to you (-1)
 h2o.removeAll() # Clean slate - just in case the cluster was already running
 
-
-# If models are run before
-# this is second run (should re-use these models)
-# rfmodel.path = "C:\\Users\\kikimeow\\Documents\\Class- R Class\\Kaggle- AirBnB\\Solution Final - SH\\model output\\DRF_model_R_1459976840986_21795"
-# glmmodel.path = "C:\\Users\\kikimeow\\Documents\\Class- R Class\\Kaggle- AirBnB\\Solution Final - SH\\model output\\GLM_model_R_1459976840986_14102"
-# gbmmodel.path = "C:\\Users\\kikimeow\\Documents\\Class- R Class\\Kaggle- AirBnB\\Solution Final - SH\\model output\\GBM_model_R_1459976840986_14127"
-# 
-# rfmodel = h2o.loadModel(rfmodel.path)
-# glmmodel = h2o.loadModel(glmmodel.path)
-# gbmmodel = h2o.loadModel(gbmmodel.path)
-# 
-# rm(rfmodel.path)
-# rm(glmmodel.path)
-# rm(gbmmodel.path)
 
 # **************************************
 # Save as H2O frames
@@ -50,10 +36,6 @@ class(test_h2o)
 # Setup X (predictors) & Y
 Namey <- "booked"
 Namesx <- setdiff(names(X_train), c("id", "country_destination", Namey))
-
-# **************************************
-# Run GLM, GBM, Random Forest with search grid 
-# **************************************
 
 # **************************************
 # GLM Model - Search Grid
