@@ -8,10 +8,6 @@
 path <- "fill in path"
 setwd(path)
 
-load("data/Preprocessed.RData")
-load("./data/Preprocessed.RData")
-load("data/H2ORunwithData.RData")
-
 require(data.table)
 require(bit64)
 require(plyr)
@@ -207,9 +203,6 @@ test <- subset(combined, id %in% test_ids)
 
 rm(combined)
 
-#save.image("~/Class- R Class/Kaggle- AirBnB/Solution Final - SH/data/Preprocessed.RData")
-
-
 ## **************************************
 #  Add features from the sessions dataset
 ## **************************************
@@ -341,23 +334,6 @@ sessions_summary <- actionCombo_avg %>%
   dplyr::left_join(actionCombo_secs, by = "id") %>%
   dplyr::left_join(actionCombo_sum, by = "id") %>%
   dplyr::left_join(sessions_total, by = "id")
-  # dplyr::left_join(sessions_action_detail_avg, by = "id") %>%
-  # dplyr::left_join(sessions_action_type_avg, by = "id") %>%
-  # 
-  # dplyr::left_join(sessions_action_flag, by = "id") %>%
-  # dplyr::left_join(sessions_action_detail_flag, by = "id") %>%
-  # dplyr::left_join(sessions_action_type_flag, by = "id") %>%
-  # 
-  # dplyr::left_join(sessions_action_secs, by = "id") %>%
-  # dplyr::left_join(sessions_action_detail_secs, by = "id") %>%
-  # dplyr::left_join(sessions_action_type_secs, by = "id") %>%
-  #   
-  # dplyr::left_join(sessions_action_sum, by = "id") %>%
-  # dplyr::left_join(sessions_action_detail_sum, by = "id") %>%
-  # dplyr::left_join(sessions_action_type_sum, by = "id") %>%
-
-  #dplyr::left_join(sessions_total_flag, by = "id") %>%
-  #dplyr::left_join(sessions_total_secs, by = "id")
 
 # clean-up column name  
 names(device_summary) <- gsub("-", "",names(device_summary))
@@ -395,27 +371,12 @@ rm(actionCombo_secs)
 rm(actionCombo_sum)
 rm(actionCombo_flag)
 rm(sessions_total)
-# rm(sessions_action_detail_avg)
-# rm(sessions_total_secs)
-# rm(sessions_total_flag)
-# rm(sessions_action_type_avg)
-# rm(sessions_action_avg)
-# rm(sessions_action_detail_secs)
-# rm(sessions_action_type_secs)
-# rm(sessions_action_type_flag)
-# rm(sessions_action_sum)
-# rm(sessions_action_detail_flag)
-# rm(sessions_action_detail_sum)
-# rm(sessions_action_flag)
-# rm(sessions_action_secs)
-# rm(sessions_action_type_sum)
 rm(sessions)
 rm(sessionsTrim)
 rm(device_summary)
 rm(sessions_summary)
 memory.size()
 gc()
-memory.size()
 
 ## ***********************************
 #  Split Training Data into Train and Evaluation set
@@ -451,6 +412,6 @@ y_eval <- X_eval$booked
 #  Save
 ## ***********************************
 
-save.image("~/Class- R Class/Kaggle- AirBnB/Solution Final - SH/data/Preprocessed.RData")
+save.image("data/Preprocessed.RData")
 
 ######################
