@@ -177,11 +177,6 @@ save(XGB_model1_CM, file = "model output/XGB_model1_CM.rda")
 save(VarImp_model_1, file = "model output/VarImp_model_1.rda")
 
 
-
-
-###__Code below are not checked yet______________________________________________________##########
-
-
 # 5-fold cross validation
 set.seed(100)
 # k-fold cross validation, with timing
