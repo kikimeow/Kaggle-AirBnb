@@ -4,29 +4,13 @@
 # **************************************
 
 # set your working directory
-path <- "~/Class- R Class/Kaggle- AirBnB/Solution Final - SH"
+path <- "input path here"
 setwd(path)
 
 # create directory
 dir.create(paste0("data")) # Please put the download data into this folder
 dir.create(paste0("model output"))
 dir.create(paste0("script"))
-
-# load libraries
-# x<-c("caret", "dplyr", "data.table", "bit64")
-# lapply(x, FUN = function(X) {
-#   do.call("require", list(X)) 
-# })
-# rm(x)
-
-
-
-# **************************************
-# Functions
-# **************************************
-
-
-
 
 # **************************************
 # run scripts
