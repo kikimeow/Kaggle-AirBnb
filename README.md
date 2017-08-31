@@ -5,4 +5,4 @@ Details of the project and the analysis is in the file "AirBnB.pdf."
 
 To run the code, input the working in the run.R file.  Make a data folder in the directory and save the data files into the data folder.
 
-The "Airbnb_multipleModels.R" is a separate file that shows the preliminary version of the model.  The scripts in the run.R file are a cleaned-up version that runs a single model using H2O.  
+The "Airbnb_multipleModels.R" is a separate file that shows the preliminary version of the model.  The scripts in the run.R file are a cleaned-up version that uses H2O to run the models.
