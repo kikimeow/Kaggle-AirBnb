@@ -3,7 +3,7 @@ The objective of the project is to predict in which country a new user will make
 
 The data can be obtained from this link: https://www.kaggle.com/c/airbnb-recruiting-new-user-bookings/data.  
 
-Details of the project and the analysis is in the file "AirBnB.pdf."  
+Details of the project and the analysis is in the file [AirBnB.pdf.](https://www.google.com)
 
 To run the code, input the working in the run.R file.  Make a data folder in the directory and save the data files into the data folder.
 
