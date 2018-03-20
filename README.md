@@ -1,5 +1,7 @@
 # Airbnb New User Bookings
-The objective of the project is to predict in which country a new user will make his or her first booking based on user demographics information and user sessions information.  The data can be obtained from this link: https://www.kaggle.com/c/airbnb-recruiting-new-user-bookings/data.  
+The objective of the project is to predict in which country a new user will make his or her first booking based on user demographics information and user sessions information.  The analysis revealed usage patterns and segmentation of users that are more likely to book a stay.
+
+The data can be obtained from this link: https://www.kaggle.com/c/airbnb-recruiting-new-user-bookings/data.  
 
 Details of the project and the analysis is in the file "AirBnB.pdf."  
 
